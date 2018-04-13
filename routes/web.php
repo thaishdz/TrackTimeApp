@@ -15,6 +15,18 @@ Route::get('/', function () {
     return view('mainTracktime');
 });
 
+Route::get('/profile/settings',function() {
+	return view('TracktimeApp.profile');
+});
+
+Route::get('projects',function(){
+	return view('TracktimeApp.projects');
+});
+
+Route::get('tasks',function(){
+	return view('TracktimeApp.tasks');
+});
+
 /*Route::get('/test',function() {
 	return view('mainTracktime');
 });*/
