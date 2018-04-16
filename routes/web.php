@@ -12,24 +12,18 @@
 */
 
 Route::get('/', function () {
-    return view('mainTracktime');
+    return view('layouts.master');
 });
 
-Route::get('/profile/settings',function() {
+Route::get('profile',function() {
 	return view('TracktimeApp.profile');
 });
 
-Route::get('projects',function(){
-	return view('TracktimeApp.projects');
-});
+Route::get('projects', 'ProjectController@index')->name('project.list');
 
 Route::get('tasks',function(){
 	return view('TracktimeApp.tasks');
 });
-
-/*Route::get('/test',function() {
-	return view('mainTracktime');
-});*/
 
 Auth::routes();
 

@@ -1,45 +1,43 @@
-@extends('adminlte::page')
+@extends('layouts.master')
 
-@section('css')
-    <link rel="stylesheet" href="/css/profile.css">
-@stop
+@section('header')
+
+	Profile
+
+@endsection
 
 @section('content')
+	<div class="col-md-6">
+    	<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Edit Profile</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputFile">File input</label>
+                  <input type="file" id="exampleInputFile">
 
+                  <p class="help-block">Example block-level help text here.</p>
+                </div>
+              </div>
+              <!-- /.box-body -->
 
-<h2>Edit Profile</h2>
-<div class="form-group row">
-	<div class="col-xs-3">
-  		<form action="" method="POST">
-  			<label for="lname">Name</label>
-  				<input class="form-control" type="text" id="name" placeholder="name">
-
-			<label for="">Password</label>
-  				<input class="form-control" type="password" id="password">
-
-			<label for="">Confirm Password</label>
-  				<input class="form-control" type="text" id="c_password">
-
-			<label for="">Email Address</label>
-  				<input class="form-control" type="email" id="email">
-
-			<label for="">Confirm Email</label>
-				<input class="form-control" type="email" id="c_email">
-
-	<h2>Company</h2>
-		<label for="">Company Name</label>
-			<input class="form-control" type="text" id="company_name">
-
-		<label for="">Address</label>
-			<input class="form-control" type="text" id="address">
-  
-		<input type="submit" value="Save Profile">
-  
-		</form>
-  	</div>  
-</div>
-
-
-
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
