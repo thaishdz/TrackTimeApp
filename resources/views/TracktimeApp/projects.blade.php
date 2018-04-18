@@ -8,6 +8,8 @@
 @endsection
 
 @section('content')
+<a href="{{ route('projects.create') }}"><input class="btn" type="button" value="Create Project"></a>
+
  	<div class="col-md-3 col-sm-6 col-xs-12">
 
         <div class="info-box bg-aqua">
@@ -27,6 +29,6 @@
     	</div>
     </div>
 
-@include('partials.projectList')
+@include('partials.indexProject')
 
 @endsection

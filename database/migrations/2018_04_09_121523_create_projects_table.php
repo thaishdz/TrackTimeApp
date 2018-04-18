@@ -23,7 +23,9 @@ class CreateProjectsTable extends Migration
 
             $table->foreign('companies_id')
             ->references('id')
-            ->on('companies'); 
+            ->on('companies')
+            ->update('cascade')
+            ->delete('cascade');; 
 
             // $table->timestamps();
         });

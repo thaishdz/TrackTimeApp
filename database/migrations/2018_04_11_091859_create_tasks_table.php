@@ -27,8 +27,12 @@ class CreateTasksTable extends Migration
         });
 
         Schema::table('tasks', function($table) {
-                $table->foreign('projects_id')->references('id')->on('projects');
-                $table->foreign('time_id')->references('id')->on('time__entries');
+                $table->foreign('projects_id')->references('id')->on('projects')
+                ->update('cascade')
+                ->delete('cascade');
+                $table->foreign('time_id')->references('id')->on('time__entries')
+                ->update('cascade')
+                ->delete('cascade');
         });
     }
 
