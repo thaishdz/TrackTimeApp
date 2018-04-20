@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Task;
 
 class TaskController extends Controller
 {
@@ -13,7 +14,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $tasks = Task::all();
+
+        return view('TracktimeApp.tasks',compact('tasks'));
     }
 
     /**
@@ -23,7 +26,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('partials.createTask');
     }
 
     /**
@@ -34,7 +37,17 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request()->validate([
+
+            'name' => 'required',
+            'description' => 'required',
+
+        ]);
+
+        Task::create($request->all());
+
+        return redirect()->route('tasks.index')
+                        ->with('success','Task created sucessfully!');
     }
 
     /**

@@ -19,17 +19,15 @@ Route::get('profile',function() {
 	return view('TracktimeApp.profile');
 });
 
-// CRUD - Project 
+// CRUD - Project ///////////////////////////////////////
 
 Route::resource('projects','ProjectController');
-/*Route::get('projects', 'ProjectController@index')->name('project.list');
 
-Route::get('project/create','ProjectController@create');*/
 /////////////////////////////////////////////////////////
 
-Route::get('tasks',function(){
-	return view('TracktimeApp.tasks');
-});
+// CRUD - Task
+Route::resource('tasks','TaskController');
+/////////////////////////////////////////////////////////
 
 Auth::routes();
 

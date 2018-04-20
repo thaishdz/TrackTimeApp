@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 use App\Project;
+use App\Task;
+
 class ProjectController extends Controller
 {
     /**
@@ -36,13 +39,18 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
+        $request->validate([
 
-            'name' => 'required',
+            'name' => 'required|min:5|max:20',
+            'description' => 'nullable|min:10|max:50',
         ]);
 
         Project::create($request->all());
-        return redirect()->route('projects.index');
+
+
+        return redirect()->route('projects.index')
+                         ->with('success','Project created successfully');
+
     }
 
     /**
@@ -64,7 +72,7 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-        $project = Project::find($id);
+        $project = Project::findOrFail($id);
         return view('partials.editProject',compact('project'));
     }
 
@@ -77,13 +85,16 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id){
 
-        request()->validate([
+        $request->validate([
 
-            'name' => 'required',
+            'name' => 'required|min:5|max:20',
+            'description' => 'nullable|min:10|max:50',
         ]);
+        
+        Project::findOrFail($id)->update($request->all());
 
-        Project::find($id)->update($request->all());
-        return redirect()->route('projects.index');
+        return redirect()->route('projects.index')
+                        ->with('success','Project updated successfully');
     }
 
     /**
@@ -94,7 +105,14 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        Project::find($id)->delete();
-        return redirect()->route('projects.index');
+        $tasks = DB::table('tasks')->select('id')->where("projects_id", "=", $id)->get()->toArray();
+            foreach($tasks as $task){   
+                Task::destroy($task->id);  
+            }
+            
+        Project::destroy($id);
+        
+        return redirect()->route('projects.index')
+                         ->with('success','Project deleted succesfully!');
     }
 }

@@ -20,7 +20,7 @@ class CreateTasksTable extends Migration
             $table->float('estimated_minute');
             $table->boolean('active');
 
-            $table->integer('projects_id')->unsigned();
+           $table->integer('projects_id')->unsigned();
             
 
             $table->integer('time_id')->unsigned();
@@ -30,6 +30,7 @@ class CreateTasksTable extends Migration
                 $table->foreign('projects_id')->references('id')->on('projects')
                 ->update('cascade')
                 ->delete('cascade');
+                
                 $table->foreign('time_id')->references('id')->on('time__entries')
                 ->update('cascade')
                 ->delete('cascade');

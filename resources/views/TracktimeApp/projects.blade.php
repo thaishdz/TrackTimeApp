@@ -3,14 +3,9 @@
 
 @section('header')
 
-	PROJECTS
+  @include('partials.messages.flash-messages')
 
-@endsection
-
-@section('content')
-<a href="{{ route('projects.create') }}"><input class="btn" type="button" value="Create Project"></a>
-
- 	<div class="col-md-3 col-sm-6 col-xs-12">
+	<div class="col-md-3 col-sm-6 col-xs-12">
 
         <div class="info-box bg-aqua">
             <span class="info-box-icon"><i class="fa fa-book"></i></span>
@@ -26,9 +21,16 @@
                     70% Increase in 30 Days
                   </span>
             </div>
-    	</div>
+      </div>
     </div>
+  
+    
 
-@include('partials.indexProject')
+@endsection
+
+@section('content')
+  <a href="{{ route('projects.create') }}"><input class="btn" type="button" value="Create Project"></a>
+
+  @include('partials.indexProject')
 
 @endsection

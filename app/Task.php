@@ -11,4 +11,9 @@ class Task extends Model
     ];
 
     public $timestamps = false;
+
+    /*public function project() {
+
+    	return $this->belongsTo('App\Project');
+    }*/
 }
