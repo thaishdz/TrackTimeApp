@@ -12,8 +12,13 @@ class Task extends Model
 
     public $timestamps = false;
 
-    /*public function project() {
+    public function project() {
 
     	return $this->belongsTo('App\Project');
-    }*/
+    }
+
+    public function time__entries(){
+
+    	return $this->belongsTo('App\Time_Entries');
+    }
 }

@@ -18,9 +18,9 @@ class Project extends Model
     	return $this->belongsTo('App\Companies');
     }
 
-    /*public function tasks() {
+    public function tasks() {
 
-    	return $this->belongsToMany('App\Task');
-    }*/
+    	return $this->hasMany('App\Task');
+    }
 
 }

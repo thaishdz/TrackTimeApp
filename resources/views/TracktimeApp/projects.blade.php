@@ -12,7 +12,7 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Projects</span>
-              <span class="info-box-number">2</span>
+              <span class="info-box-number">{{count($projects)}}</span>
 
               <div class="progress">
                 <div class="progress-bar" style="width: 70%"></div>

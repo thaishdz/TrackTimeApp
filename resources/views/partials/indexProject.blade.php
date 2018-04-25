@@ -13,17 +13,20 @@
     			        <th>Description</th>
     			        <th>Progress</th>
                 </tr>
-                
+                {{-- @if({{Auth::user()->companies_id}} == $project->companies_id) --}}
                   @foreach($projects as $project)
+                    @if(Auth::user()->companies_id == $project->companies_id)
                   <tr>
                  	  <td>{{++$i}}</td>
                   	 <td>{{$project->name}}</td> 
-                  	 <td>{{$project->description}}</td> 
+                  	 <td>{{$project->description}}</td>
                   	 <td>
                   		  <div class="progress progress-xs">
                       		  <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
                         </div>
                         {{-- EDIT --}}
+                      </td>
+                     
                       <td>
                         {{-- <a href="{{ route('projects.edit',$project->id) }}"> --}}
                           {!!Form::submit('Edit',['class' => 'btn btn-warning','data-toggle'=>'modal', 'data-target'=> '#edit'])!!}
@@ -36,12 +39,12 @@
                         {{-- {!! Form::close() !!} --}}
                       </td>
                   </tr>
+                  @endif
                 @endforeach 
               </table>
             </div>
           </div>
         </div>
-        {{-- @include('partials.modals.delete') --}}
         @include('partials.modals.edit')
         @include('partials.modals.delete')
       @else

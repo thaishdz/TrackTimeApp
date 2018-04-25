@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Project;
 use App\Task;
+use App\User;
 
 class ProjectController extends Controller
 {
@@ -18,7 +19,8 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::all();
-        return view('TracktimeApp.projects', compact('projects'));
+        $tasks = Task::all();
+        return view('TracktimeApp.projects', compact('projects','tasks'));
     }
 
     /**
@@ -45,12 +47,11 @@ class ProjectController extends Controller
             'description' => 'nullable|min:10|max:50',
         ]);
 
-        Project::create($request->all());
 
+        Project::create($request->all());
 
         return redirect()->route('projects.index')
                          ->with('success','Project created successfully');
-
     }
 
     /**

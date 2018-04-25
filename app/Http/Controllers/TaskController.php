@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Task;
+use App\Project;
+use App\Time_Entries;
 
 class TaskController extends Controller
 {
@@ -15,8 +19,9 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
+        $projects = Project::all();
 
-        return view('TracktimeApp.tasks',compact('tasks'));
+        return view('TracktimeApp.tasks',compact('tasks','projects'));
     }
 
     /**
@@ -26,7 +31,13 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('partials.createTask');
+        /*$company_user = DB::table('companies')
+        ->join('users','users.companies_id', '=','companies.id')
+        ->select('companies.id')
+        ->get()->toArray();*/
+        $projects = Project::all();
+
+        return view('partials.createTask',compact('projects'));
     }
 
     /**
@@ -37,14 +48,36 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $request()->validate([
+        $request->validate([
 
-            'name' => 'required',
-            'description' => 'required',
+            'name' => 'required|min:5|max:20',
+            'description' => 'nullable|min:10|max:50',
+            'estimated_minute' => 'required|min:1',
 
         ]);
 
-        Task::create($request->all());
+       // dd($request);
+       Time_Entries::create([
+            'start' => $request->test,
+            'stop'  => $request->test1,
+            'duration' => null,
+            'in_progress' => null,
+       ]);
+
+       /*$id_time = Time_Entries::all()->;
+       foreach ($id_time as $id) {
+           
+       }*/
+       Task::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'estimated_minute' => $request->estimated_minute,
+            'active' => $request->active,
+            'projects_id' => $request->projects_id,
+            'time_id' => ,
+       ]);
+        //Task::create($request->all());
+       
 
         return redirect()->route('tasks.index')
                         ->with('success','Task created sucessfully!');
@@ -69,7 +102,9 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        //
+        $projects = Project::all();
+        $tasks = Task::findOrFail($id);
+        return view('partials.modals.tasks.form',compact('projects','tasks'));
     }
 
     /**
@@ -81,7 +116,16 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+
+            'name' => 'required|min:5|max:20',
+            'description' => 'nullable|min:10|max:50',
+        ]);
+        
+        Task::findOrFail($id)->update($request->all());
+
+        return redirect()->route('tasks.index')
+                        ->with('success','Task updated successfully');
     }
 
     /**
@@ -92,6 +136,8 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Task::destroy($id);
+        return redirect()->route('tasks.index')
+                         ->with('success','Task deleted succesfully!');
     }
 }

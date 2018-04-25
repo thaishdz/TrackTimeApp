@@ -16,9 +16,10 @@ class CreateTimeEntriesTable extends Migration
         Schema::create('time__entries', function (Blueprint $table) {
             $table->increments('id');
             $table->datetime('start');
-            $table->datetime('stop');
-            $table->float('duration');
-            $table->timestamps();
+            $table->datetime('stop')->nullable();
+            $table->float('duration')->nullable();
+            $table->time('in_progress')->nullable();
+        //    $table->timestamps();
         });
     }
 

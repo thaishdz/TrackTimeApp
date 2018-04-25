@@ -77,6 +77,8 @@ class RegisterController extends Controller
             'username' => $data['name'] . "." . substr($data['email'],0,strpos($data['email'],"@")),
             'password' => bcrypt($data['password']),
             'token'    => str_random(25),
+
+            'companies_id' => $data['company'],
         ]);
 
         

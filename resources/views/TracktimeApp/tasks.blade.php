@@ -10,7 +10,8 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Tasks</span>
-              <span class="info-box-number">5</span>
+              
+              <span class="info-box-number">{{count($tasks)}}</span>
 
               <div class="progress">
                 <div class="progress-bar" style="width: 70%"></div>

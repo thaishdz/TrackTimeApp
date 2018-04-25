@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email','username','password','token'
+        'name', 'email','username','password','token','companies_id'
     ];
 
     // public $timestamps = false;
@@ -83,5 +83,13 @@ class User extends Authenticatable
         return false;
     }
 
+
+
+    // Relantionship
+
+    public function companies() {
+
+        return $this->belongsTo('App\Companies');
+    }
     
 }

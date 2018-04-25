@@ -49,7 +49,7 @@
                     </div>
 
                     <div class="form-group">
-                      {{ Form::hidden('companies_id',2,['class' => 'form-control'])}}
+                      {{ Form::hidden('companies_id',Auth::user()->companies_id,['class' => 'form-control'])}}
                     </div>
 
                     <div class="box-footer">
