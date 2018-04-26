@@ -20,6 +20,19 @@
   <link rel="stylesheet" href="{{asset('dist/css/skins/skin-blue.min.css')}}">
   @stack('styles')
 
+<!-- REQUIRED JS SCRIPTS -->
+
+<!-- jQuery 3 -->
+<script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{asset('dist/js/adminlte.min.js')}}"></script>
+{{-- Timer --}}
+<script src="{{asset('js/jquery.1.11.2.min.js')}}"></script>
+<script src="{{asset('js/timer.jquery.min.js')}}"></script>
+
+
 
   <!-- Google Font -->
   <link rel="stylesheet"
@@ -317,14 +330,6 @@ desired effect
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED JS SCRIPTS -->
-
-<!-- jQuery 3 -->
-<script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-<!-- AdminLTE App -->
-<script src="{{asset('dist/js/adminlte.min.js')}}"></script>
 
 </body>
 </html>

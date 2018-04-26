@@ -6,10 +6,11 @@
      href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
   </head>
   <body>
+
       <label >When does it start?</label>
         <div id="datetimepicker" class="input-append date">
           
-            <input type="text" name="test"></input>
+            <input type="text" name="start"></input>
             <span class="add-on">
               <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
             </span>
@@ -18,7 +19,7 @@
       <label >When does it finish?</label>
 
       <div id="datetimepicker1" class="input-append date">
-          <input type="text" name="test1"></input>
+          <input type="text" name="stop"></input>
           <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
           </span>

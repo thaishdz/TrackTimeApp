@@ -20,8 +20,10 @@ class TaskController extends Controller
     {
         $tasks = Task::all();
         $projects = Project::all();
+        $time = Time_Entries::all();
 
-        return view('TracktimeApp.tasks',compact('tasks','projects'));
+
+        return view('TracktimeApp.tasks',compact('tasks','projects','time'));
     }
 
     /**
@@ -56,27 +58,24 @@ class TaskController extends Controller
 
         ]);
 
-       // dd($request);
        Time_Entries::create([
-            'start' => $request->test,
-            'stop'  => $request->test1,
+            'start' => $request->start,
+            'stop'  => $request->stop,
             'duration' => null,
             'in_progress' => null,
        ]);
 
-       /*$id_time = Time_Entries::all()->;
-       foreach ($id_time as $id) {
-           
-       }*/
+       $id_time = Time_Entries::all()->last();
+       
        Task::create([
             'name' => $request->name,
             'description' => $request->description,
             'estimated_minute' => $request->estimated_minute,
             'active' => $request->active,
             'projects_id' => $request->projects_id,
-            'time_id' => ,
+            'time_id' => $id_time->id,
        ]);
-        //Task::create($request->all());
+    //Task::create($request->all());
        
 
         return redirect()->route('tasks.index')
