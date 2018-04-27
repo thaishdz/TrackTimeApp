@@ -1,9 +1,5 @@
 @extends('layouts.master')
 
-{{-- @push('styles')
-    <link href="{{ asset('css/switch.css') }}" rel="stylesheet">
-@endpush --}}
-
 @section('header')
 
   <div class="box-header with-border">
@@ -16,7 +12,7 @@
 <div class="col-md-6">
       <div class="box box-primary">
             
-            @if (count($errors) < 0)
+            @if (count($errors) > 0)
                     <div class="alert alert-danger">
                       <strong>Whoops!</strong> There were some problems with your input.<br><br>
                     <ul>
@@ -31,22 +27,23 @@
             {{ Form::open(array('route' => 'tasks.store','method'=>'POST')) }}
                 <div class="box-body">
                     <div class="form-group">
-                      {{ Form::label('nameTask', 'Name Task') }}
+                      {{ Form::label('nameTask', 'Task Name') }}
                       {{ Form::text('name',null,['class' => 'form-control']) }}
                     </div>
 
                     <div class="form-group">
-                      {{ Form::label('name', 'Description Task') }}
+                      {{ Form::label('name', 'Task Description ') }}
                       {{ Form::text('description',null,['class' => 'form-control'])}}
                     </div>  
 
                     <div class="form-group">
-                      {{ Form::label('estimated_minutel', 'Time Estimated in Minutes') }}
+                      {{ Form::label('estimated_minutel', 'Time Estimated') }}
                       {{ Form::text('estimated_minute',null,['class' => 'form-control'])}}
                     </div>
 
                     <div class="form-group">
-                      {{ Form::hidden('active',1,['class' => 'form-control'])}}
+                      {{ Form::label('statusl', 'Task Status') }}
+                      {{ Form::checkbox('status', 'ON',true)}}
                     </div>
 
                     {{-- project  --}}
@@ -67,7 +64,7 @@
                       @include('test')
                     </div>
                     <div class="box-footer">
-                      {{Form::submit('Submit',['class' => 'btn btn-primary'])}}
+                      {{Form::submit('Create Task',['class' => 'btn btn-success'])}}
                     </div>
                 </div>    
             {{ Form::close() }}

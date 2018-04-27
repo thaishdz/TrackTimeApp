@@ -27,7 +27,9 @@
 
 @section('content')
   <a href="{{ route('tasks.create') }}"><input class="btn" type="button" value="Create Task"></a>
-
+  
   @include('partials.indexTask')
 
 @endsection
+
+

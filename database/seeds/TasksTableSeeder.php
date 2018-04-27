@@ -15,7 +15,7 @@ class TasksTableSeeder extends Seeder
         	'name' => 'task 1',
         	'description' => 'Hello there!',
         	'estimated_minute' => '10',
-        	'active' => '1',
+        	'status' => 'ON',
             'projects_id' => '1',
             'time_id' => 1
         ]);
@@ -24,7 +24,7 @@ class TasksTableSeeder extends Seeder
             'name' => 'Edit Tweet',
             'description' => 'Finally, we have done this feature',
             'estimated_minute' => '0.5',
-            'active' => '1',
+            'status' => 'OFF',
             'projects_id' => '2',
             'time_id' => 2
         ]);

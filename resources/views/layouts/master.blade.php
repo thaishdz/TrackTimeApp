@@ -22,6 +22,7 @@
 
 <!-- REQUIRED JS SCRIPTS -->
 
+
 <!-- jQuery 3 -->
 <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 <!-- Bootstrap 3.3.7 -->
@@ -31,6 +32,7 @@
 {{-- Timer --}}
 <script src="{{asset('js/jquery.1.11.2.min.js')}}"></script>
 <script src="{{asset('js/timer.jquery.min.js')}}"></script>
+
 
 
 

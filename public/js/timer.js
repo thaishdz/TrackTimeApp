@@ -1,25 +1,3 @@
-(function () {
-        $('.start-timer-btn').on('click',function() {
-            $('.timer').timer();
-        });
-
-        $('.resume-timer-btn').on('click',function() {
-            $('.timer').timer('resume');
-        });
-
-        $('.pause-timer-btn').on('click',function() {
-            $('.timer').timer('pause');
-        });
-
-        $('.remove-timer-btn').on('click',function() {
-            $('.timer').timer('remove');
-            $('.timer').timer();
-        });
-
-}) ();
-
-
-
 /*function initTimer() {
         var currentMinutes = Math.floor(totalSecs / 60);
         var currentSeconds = totalSecs % 60;

@@ -18,12 +18,13 @@ class CreateTasksTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->float('estimated_minute');
-            $table->boolean('active');
+            $table->string('status');
 
             $table->integer('projects_id')->unsigned();
             
 
             $table->integer('time_id')->unsigned();
+            $table->engine = 'InnoDB';
         });
 
         Schema::table('tasks', function($table) {
@@ -31,9 +32,7 @@ class CreateTasksTable extends Migration
                 ->update('cascade')
                 ->onDelete('cascade');
                 
-                $table->foreign('time_id')->references('id')->on('time__entries')
-                ->update('cascade')
-                ->onDelete('cascade');
+                $table->foreign('time_id')->references('id')->on('time__entries')->onDelete('cascade');
         });
     }
 

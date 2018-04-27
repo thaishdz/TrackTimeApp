@@ -13,7 +13,6 @@
     			        <th>Description</th>
     			        <th>Progress</th>
                 </tr>
-                {{-- @if({{Auth::user()->companies_id}} == $project->companies_id) --}}
                   @foreach($projects as $project)
                     @if(Auth::user()->companies_id == $project->companies_id)
                   <tr>
@@ -35,7 +34,8 @@
                       {{-- DELETE --}}
                       <td>
                         {{-- {!! Form::open(['method' => 'DELETE','route' => ['projects.destroy',$project->id]]) !!} --}}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-danger','data-toggle'=>'modal', 'data-target'=> '#delete']) !!}
+                            {!! Form::button('Delete', ['class' => 'btn btn-danger','data-toggle'=>'modal','data-id' => $project->id,
+                            'data-target'=> '#delete']) !!}
                         {{-- {!! Form::close() !!} --}}
                       </td>
                   </tr>
@@ -52,39 +52,3 @@
     @endif
 
 
-{{-- <script type="text/javascript">
-  function editForm(id) {
-    save_method = 'edit';
-    $('input[name=method]').val('PUT');
-    $('#modal-form form')[0].reset();
-
-        $.ajax({
-            url:"{{url('projects/update')}}" + '/' + id,
-            type:'POST',
-            data:JSON,
-            success:function(data) {
-                if(data.errors) {
-                    if(data.errors.name){
-                        $( '#name-error' ).html( data.errors.name[0] );
-                    }
-                    if(data.errors.email){
-                        $( '#email-error' ).html( data.errors.email[0] );
-                    }
-                    if(data.errors.password){
-                        $( '#password-error' ).html( data.errors.password[0] );
-                    }
-                    
-                }
-                if(data.success) {
-                    $('#success-msg').removeClass('hide');
-                    setInterval(function(){ 
-                        $('#SignUp').modal('hide');
-                        $('#success-msg').addClass('hide');
-                    }, 3000);
-                }
-            },
-        });
-    });
-  }
-    
-</script> --}}

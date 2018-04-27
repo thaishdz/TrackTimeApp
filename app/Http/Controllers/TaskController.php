@@ -38,7 +38,6 @@ class TaskController extends Controller
         ->select('companies.id')
         ->get()->toArray();*/
         $projects = Project::all();
-
         return view('partials.createTask',compact('projects'));
     }
 
@@ -58,6 +57,8 @@ class TaskController extends Controller
 
         ]);
 
+
+        // dd($request->all());
        Time_Entries::create([
             'start' => $request->start,
             'stop'  => $request->stop,
@@ -66,20 +67,32 @@ class TaskController extends Controller
        ]);
 
        $id_time = Time_Entries::all()->last();
-       
-       Task::create([
+
+       if ($request->has('status')) {
+           Task::create([
             'name' => $request->name,
             'description' => $request->description,
             'estimated_minute' => $request->estimated_minute,
-            'active' => $request->active,
+            'status' => $request->status,
             'projects_id' => $request->projects_id,
             'time_id' => $id_time->id,
-       ]);
-    //Task::create($request->all());
-       
+            ]);
+       }else{
+            Task::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'estimated_minute' => $request->estimated_minute,
+            'status' => 'OFF',
+            'projects_id' => $request->projects_id,
+            'time_id' => $id_time->id,
+            ]);
+       }
+       \Session::flash('flash_message','TASK successfully added.'); //<--FLASH MESSAGE
 
-        return redirect()->route('tasks.index')
-                        ->with('success','Task created sucessfully!');
+        return redirect()->route('tasks.index');
+                       // ->with('success','Task created sucessfully!');
+
+
     }
 
     /**
@@ -120,8 +133,9 @@ class TaskController extends Controller
             'name' => 'required|min:5|max:20',
             'description' => 'nullable|min:10|max:50',
         ]);
-        
+
         Task::findOrFail($id)->update($request->all());
+
 
         return redirect()->route('tasks.index')
                         ->with('success','Task updated successfully');
@@ -136,7 +150,8 @@ class TaskController extends Controller
     public function destroy($id)
     {
         Task::destroy($id);
-        return redirect()->route('tasks.index')
-                         ->with('success','Task deleted succesfully!');
+        \Session::flash('flash_message','TASK successfully removed.'); //<--FLASH MESSAGE
+        return redirect()->route('tasks.index');
+                         //->with('success','Task deleted succesfully!');
     }
 }

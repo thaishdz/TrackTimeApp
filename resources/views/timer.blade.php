@@ -1,5 +1,5 @@
 <div class='col-md-3'>
-	<input type='text' name='timer' class='form-control timer-demo-{{$task->id}}' placeholder='0 sec'/>
+	<input type='text' name='timer' class='form-control timer-demo-{{$task->id}}' placeholder='0 sec' readonly/>
 </div>
 	
 <div class='col-md-9'>
