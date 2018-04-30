@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Role;
+use App\Companies;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -54,6 +55,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'company'   => 'required|string|max:255',
         ]);
     }
 
@@ -71,6 +73,12 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]); */
 
+        Companies::create([
+            'name' => $data['company'],
+        ]);
+
+        $id_company = Companies::all()->last();
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -78,7 +86,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'token'    => str_random(25),
 
-            'companies_id' => $data['company'],
+            'companies_id' => $id_company->id,
         ]);
 
         

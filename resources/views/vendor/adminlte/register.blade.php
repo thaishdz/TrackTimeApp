@@ -48,17 +48,17 @@
                         </span>
                     @endif
                 </div>
-
+                    {{-- this line was edited on friday --}}
                 <div class="form-group has-feedback {{ $errors->has('company') ? 'has-error' : '' }}">
-                    <input id="company" type="hidden" name="company" class="form-control" value="1">
-                    <!-- <span class="glyphicon glyphicon-envelope form-control-feedback"></span> -->
+                    <input id="company" type="text" name="company" class="form-control" value="{{ old('company') }}" placeholder="Company Name">
+                        {{-- <span class="glyphicon glyphicon-industrial-zone"></span> --}}
                     @if ($errors->has('company'))
                         <span class="help-block">
                             <strong>{{ $errors->first('company') }}</strong>
                         </span>
                     @endif
                 </div>
-
+                    {{--  --}}
 
                 <div class="form-group has-feedback {{ $errors->has('password') ? 'has-error' : '' }}">
                     <input type="password" name="password" class="form-control"

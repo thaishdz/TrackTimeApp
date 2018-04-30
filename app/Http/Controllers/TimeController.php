@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Task;
+use App\Time_Entries;
+
 class TimeController extends Controller
 {
     /**
@@ -34,7 +37,7 @@ class TimeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -56,7 +59,7 @@ class TimeController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -68,7 +71,14 @@ class TimeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $time = Time_Entries::findOrFail($id);
+        $time->total = $request->total;
+        $time->duration = $request->timing;
+        if ($time->save()) {
+            return response()->json(["response" => true,"time" => $time]);
+        }
+        return response()->json(["response" => false,"time" => $time]);
     }
 
     /**

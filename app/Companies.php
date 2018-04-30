@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Companies extends Model
 {
+	protected $fillable = [
+        'name','address'
+    ];
+
+    public $timestamps = false;
+
 	public function project() {
 
     	return $this->hasMany('App\Project');

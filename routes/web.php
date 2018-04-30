@@ -15,10 +15,6 @@ Route::get('/', function () {
     return view('layouts.master');
 });
 
-/*Route::get('/test', function () {
-    return view('test');
-});
-*/
 Route::get('profile',function() {
 	return view('TracktimeApp.profile');
 });
@@ -31,6 +27,10 @@ Route::resource('projects','ProjectController');
 
 // CRUD - Task
 Route::resource('tasks','TaskController');
+/////////////////////////////////////////////////////////
+
+// CRUD - Time
+Route::resource('time','TimeController');
 /////////////////////////////////////////////////////////
 
 Auth::routes();

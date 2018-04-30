@@ -15,8 +15,8 @@ class TimeTableSeeder extends Seeder
 
         	'start' => '2018-04-09 00:00:00',
         	'stop' => '2018-04-10 09:00:02',
-        	'duration' => '40',
-            'in_progress' => '00:50:19',
+        	'total' => '40',
+            'duration' => '50:19',
 
         ]);
 
@@ -24,8 +24,8 @@ class TimeTableSeeder extends Seeder
 
             'start' => '2018-04-09 18:00:02',
             'stop' => '2018-04-10 15:00:02',
-            'duration' => '40',
-            'in_progress' => '00:50:19',
+            'total' => '30',
+            'duration' => '50:19',
 
         ]);
     }

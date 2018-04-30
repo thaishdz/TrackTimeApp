@@ -33,10 +33,6 @@ class TaskController extends Controller
      */
     public function create()
     {
-        /*$company_user = DB::table('companies')
-        ->join('users','users.companies_id', '=','companies.id')
-        ->select('companies.id')
-        ->get()->toArray();*/
         $projects = Project::all();
         return view('partials.createTask',compact('projects'));
     }
@@ -62,8 +58,8 @@ class TaskController extends Controller
        Time_Entries::create([
             'start' => $request->start,
             'stop'  => $request->stop,
+            'total' => null,
             'duration' => null,
-            'in_progress' => null,
        ]);
 
        $id_time = Time_Entries::all()->last();

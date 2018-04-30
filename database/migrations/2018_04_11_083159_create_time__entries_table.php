@@ -15,10 +15,12 @@ class CreateTimeEntriesTable extends Migration
     {
         Schema::create('time__entries', function (Blueprint $table) {
             $table->increments('id');
+            // $table->datetime('date_hour_start_estimated');
+            // $table->datetime('date_hour_finish_estimated');
             $table->datetime('start');
             $table->datetime('stop')->nullable();
-            $table->float('duration')->nullable();
-            $table->time('in_progress')->nullable();
+            $table->string('total')->nullable();
+            $table->string('duration')->nullable();
         //    $table->timestamps();
         });
     }
