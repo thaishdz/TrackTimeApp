@@ -13,17 +13,7 @@
 <div class="col-md-6">
     <div class="box box-primary">
 
-
-        @if (count($errors) > 0)
-          <div class="alert alert-danger">
-              <strong>Whoops!</strong> There were some problems with your input.<br><br>
-             <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-             </ul>
-          </div>
-        @endif
+        @include ('partials.messages.errors')
 
         {!! Form::model($project, [ 'route' => ['projects.update', $project->id],'method' => 'PUT']) !!}
             <div class="box-body">
@@ -37,20 +27,24 @@
                     {{ Form::text('description',null,['class' => 'form-control'])}}
                 </div>  
 
-
                 <div class="form-group">
-                    {{ Form::hidden('active',1,['class' => 'form-control'])}}
+                    {{ Form::label('statusl', 'Project Status') }}
+                    {{ Form::checkbox('active', 'ON',true)}}
                 </div>
 
                 <div class="form-group">
-                    {{ Form::hidden('companies_id',2,['class' => 'form-control'])}}
-                </div>
+                    @foreach ($company as $c)
+                        @if(Auth::user()->companies_id == $c->id)
+                            {{ Form::hidden('companies_id',$c->id,['class' => 'form-control'])}}
+                        @endif
+                    @endforeach
+                </div>    
 
                 <div class="box-footer">
                     {{Form::submit('Submit',['class' => 'btn btn-primary'])}}
                 </div>
             </div>    
-            {{ Form::close() }}
+        {{ Form::close() }}
         </div>
     </div>
 @endsection

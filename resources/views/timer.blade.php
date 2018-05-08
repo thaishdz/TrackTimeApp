@@ -15,7 +15,7 @@
 	(function(){
 		var hasTimer = false;
 		
-		// Init timer start
+		// Init timer START
 		$('.start-timer-btn-{{$task->id}}').on('click', function() {
 			hasTimer = true;
 			$('.timer-demo-{{$task->id}}').timer({
@@ -26,7 +26,7 @@
 		});
 			
 
-			// Init timer resume
+			// Init timer RESUME
 		$('.resume-timer-btn-{{$task->id}}').on('click', function() {
 			$('.timer-demo-{{$task->id}}').timer('resume');
 			$(this).addClass('hidden');
@@ -34,11 +34,16 @@
 		});
 
 
-			// Init timer pause
+			// Init timer PAUSE
 		$('.pause-timer-btn-{{$task->id}}').on('click', function() {
 			$('.timer-demo-{{$task->id}}').timer('pause');
 			$(this).addClass('hidden');
 			$('.resume-timer-btn-{{$task->id}}').removeClass('hidden');
+
+
+			var pause = new Date();
+			var p = formatDate(pause);
+			alert(p);
 
 			var data = ($('#timer-{{$task->id}}').val()).split(" ",1).toString();
 
@@ -51,7 +56,7 @@
 			$.ajax({
 				url : '/time/{{$task->time_id}}',
 				type: 'PUT',
-				data : {timing : data},
+				data : {duration : data, timing : p},
 				success: function() {
 					alert('valued');
 				},
@@ -71,12 +76,12 @@
 
 			// Finish Time
 
-			var duration = 0; 
 			var finish = new Date();
-			var e = formatDate(finish);
-			alert(e);
+			var end = formatDate(finish);
+			alert(end);
 
 			var data = ($('#timer-{{$task->id}}').val()).split(" ",1).toString();
+			alert(data);
 			
 
 				$.ajaxSetup({
@@ -88,7 +93,7 @@
 			$.ajax({
 				url : '/time/{{$task->time_id}}',
 				type: 'PUT',
-				data : {timing : data,duration : duration},
+				data : {timing : end, duration : data},
 				success: function() {
 					alert('valued');
 				},

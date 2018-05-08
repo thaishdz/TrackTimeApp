@@ -33,35 +33,12 @@
 {{-- Timer --}}
 <script src="{{asset('js/jquery.1.11.2.min.js')}}"></script>
 <script src="{{asset('js/timer.jquery.min.js')}}"></script>
-{{-- moment.js --}}
-
-
-
 
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to get the
-desired effect
-|---------------------------------------------------------|
-| SKINS         | skin-blue                               |
-|               | skin-black                              |
-|               | skin-purple                             |
-|               | skin-yellow                             |
-|               | skin-red                                |
-|               | skin-green                              |
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | fixed                                   |
-|               | layout-boxed                            |
-|               | layout-top-nav                          |
-|               | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -156,7 +133,7 @@ desired effect
                 <!-- The user image in the navbar-->
                 <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="user-image" alt="User Image">
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs">{{ Auth::user()->name }}</span>
+                <span class="hidden-xs">{{ Auth::user()->username }}</span>
               
             </a>
 
@@ -174,7 +151,7 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="profile" class="btn btn-default btn-flat">Profile</a>
+                  <a href="{{ route('profile')}}" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <a href="{{ route('logout') }}" class="btn btn-default btn-flat"
@@ -206,10 +183,25 @@ desired effect
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">HEADER</li>
-        <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="{{asset('projects')}}"><i class="fa fa-folder"></i> <span>Projects</span></a></li>
-        <li><a href="{{asset('tasks')}}"><i class="fa fa-tasks"></i> <span>Tasks</span></a></li>
+        <li class="header">MENU</li>
+        <li class="active">
+          <a href="{{asset('projects')}}"><i class="fa fa-folder"></i> 
+            <span>Projects</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{{asset('tasks')}}"><i class="fa fa-tasks"></i> 
+            <span>Tasks</span>
+          </a>
+        </li>
+        @if (Auth::check() && Auth::user()->hasRole('admin'))
+          <li>
+            <a href="{{asset('admin')}}"><i class="fa fa-users"></i> 
+              <span>Admin</span>
+            </a>
+          </li>
+        @endif
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -218,18 +210,6 @@ desired effect
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        @section('header')
-
-          
-
-            MAIN PAGE
-
-            
-        @show
-      </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
         <li class="active">Here</li>

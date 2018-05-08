@@ -2,91 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use App\Companies;
+
 use Illuminate\Http\Request;
+
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+
+    public function showProfile() {
+
+    	return view('TracktimeApp.profile');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    public function updateProfile(Request $request,$id){
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    	if ($request->user()) {
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    		$request->validate([
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-        return view('TracktimeApp.profile',compact($user));
-    }
+    			'username' => 'required|min:5|max:20',
+    			'name' => 'required|min:5|max:20',
+    			'email' => 'required|min:5|max:20',
+    			'password'=>'required|confirmed',
+                'password_confirmation'=>'sometimes|required_with:password',
+    		]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-
-            'name' => $request->input('name');
-            'email' => $request->input('email');
-            ''
-
-
-        ])l;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    		if (empty($request->get('password'))) {
+    			User::findOrFail($id)->update($request->except('password'));
+    		}else{
+                unset($request['password_confirmation']);
+                $request['password']=bcrypt($request['password']);
+    			User::findOrFail($id)->update($request->all());
+    		}
+            \Session::flash('flash_message','Profile successfully updated.'); 
+            
+    		return redirect()->route('profile');
+    	}
     }
 }

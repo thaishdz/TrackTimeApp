@@ -34,7 +34,7 @@ class TaskController extends Controller
     public function create()
     {
         $projects = Project::all();
-        return view('partials.createTask',compact('projects'));
+        return view('partials.tasks.createTask',compact('projects'));
     }
 
     /**
@@ -53,8 +53,6 @@ class TaskController extends Controller
 
         ]);
 
-
-        // dd($request->all());
        Time_Entries::create([
             'start' => $request->start,
             'stop'  => $request->stop,
@@ -111,8 +109,8 @@ class TaskController extends Controller
     public function edit($id)
     {
         $projects = Project::all();
-        $tasks = Task::findOrFail($id);
-        return view('partials.modals.tasks.form',compact('projects','tasks'));
+        $task = Task::findOrFail($id);
+        return view('partials.tasks.editTask',compact('projects','task'));
     }
 
     /**
@@ -129,6 +127,10 @@ class TaskController extends Controller
             'name' => 'required|min:5|max:20',
             'description' => 'nullable|min:10|max:50',
         ]);
+
+        if (!$request->has('status')) {
+            $request['status'] = 'OFF';
+        }
 
         Task::findOrFail($id)->update($request->all());
 
@@ -148,6 +150,5 @@ class TaskController extends Controller
         Task::destroy($id);
         \Session::flash('flash_message','TASK successfully removed.'); //<--FLASH MESSAGE
         return redirect()->route('tasks.index');
-                         //->with('success','Task deleted succesfully!');
     }
 }

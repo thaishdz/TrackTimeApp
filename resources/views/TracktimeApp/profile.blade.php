@@ -2,7 +2,6 @@
 
 @section('header')
 
-	Profile
 
 @endsection
 
@@ -12,47 +11,57 @@
             <div class="box-header with-border">
               <h3 class="box-title">Edit Profile</h3>
             </div>
+            
+            @include ('partials.messages.errors')
+            @include ('partials.messages.flash-messages')
 
-            <form role="form">
+            {!!Form::open(['method' => 'POST', 'action'=> ['UserController@updateProfile', Auth::user()->id]])!!}
+              {{ csrf_field() }}
               <div class="box-body">
-
+                
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Email address</label>
-                  <input type="email" class="form-control" id="Email1" placeholder="Enter email" value="{{ Auth::user()->name }}">
+                  <label for="namel">Name</label>
+                  <input type="text" class="form-control" name="name" value="{{ Auth::user()->name }}">
                 </div>
 
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Email address</label>
-                  <input type="email" class="form-control" id="Email1" placeholder="Enter email" value="{{ Auth::user()->email }}">
+                  <label for="emailL">Email address</label>
+                  <input type="email" class="form-control" name="email" value="{{ Auth::user()->email }}">
                 </div>
 
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" class="form-control" id="Password1" placeholder="Password">
+                  <label for="usernamel">Username</label>
+                  <input type="text" class="form-control" name="username" value="{{ Auth::user()->username }}">
                 </div>
 
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Password Confirm</label>
-                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                  <label for="passwordl">Password</label>
+                  <input type="password" class="form-control" name="password" placeholder="*******">
+                </div>
+
+                <div class="form-group">
+                  <label for="confirmpasswordl">Password Confirm</label>
+                  <input id="password_confirmation" type="password" class="form-control" name="password_confirmation">
                </div>
                
+               {{-- <h3>Company details</h3>
+
                 <div class="form-group">
                   <label for="companyl">Company</label>
-                  <input type="text" class="form-control" id="company" placeholder="Name Company">
+                  <input type="text" class="form-control" name="company" placeholder="Company Name">
                 </div>
 
-                {{-- <div class="form-group">
-                  <label for="exampleInputFile">File input</label>
-                  <input type="file" id="exampleInputFile">
-
-                  <p class="help-block">Example block-level help text here.</p>
-                </div> --}}
+                <div class="form-group">
+                  <label for="addressl">Address</label>
+                  <input type="text" class="form-control" name="address" placeholder="Company Address">
+                </div>
+ --}}
               </div>
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
-            </form>
+            {!!Form::close()!!}
         </div>
     </div>
 @endsection

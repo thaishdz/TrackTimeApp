@@ -13,7 +13,9 @@ class VerifyController extends Controller
 
     	User::where('token',$token)->firstOrFail()
 
-    	->update(['token' => null]); // verify the user
+    	->update(['token' => null,
+    			  'active' => 'yes',
+    			]); // verify the user
 
 
     	return redirect()

@@ -14,14 +14,14 @@ class ProjectsTableSeeder extends Seeder
         DB::table('projects')->insert([
         	'name' => 'GoogleGlass',
         	'description' => 'VR glasses woah dude',
-        	'active' => '1',
+        	'active' => 'ON',
             'companies_id' => '1'
         ]);
 
         DB::table('projects')->insert([
             'name' => 'Twitter is cool but...',
             'description' => 'Things that we are missing',
-            'active' => '1',
+            'active' => 'ON',
             'companies_id' => '2'
         ]);
     }

@@ -18,9 +18,9 @@ class CreateTimeEntriesTable extends Migration
             // $table->datetime('date_hour_start_estimated');
             // $table->datetime('date_hour_finish_estimated');
             $table->datetime('start');
-            $table->datetime('stop')->nullable();
-            $table->string('total')->nullable();
+            $table->datetime('finish')->nullable();
             $table->string('duration')->nullable();
+            $table->string('currently')->nullable();
         //    $table->timestamps();
         });
     }

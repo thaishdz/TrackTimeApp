@@ -1,6 +1,5 @@
 @extends('layouts.master')
 
-
 @section('header')
 
   @include('partials.messages.flash-messages')
@@ -29,8 +28,12 @@
 @endsection
 
 @section('content')
-  <a href="{{ route('projects.create') }}"><input class="btn" type="button" value="Create Project"></a>
+  <a href="{{ route('projects.create') }}">
+     <button type="submit" class="btn btn-info">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button>
+  </a>
 
-  @include('partials.indexProject')
+  @include('partials.projects.indexProject')
 
 @endsection

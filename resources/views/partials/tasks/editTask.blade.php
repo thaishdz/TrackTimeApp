@@ -13,17 +13,7 @@
     <div class="col-md-6">
         <div class="box box-primary">
 
-
-            @if (count($errors) > 0)
-              <div class="alert alert-danger">
-                  <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                 <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                 </ul>
-              </div>
-            @endif
+            @include ('partials.messages.errors')
 
             {!! Form::model($task, [ 'route' => ['tasks.update', $task->id],'method' => 'PUT']) !!}
                 <div class="box-body">
@@ -39,11 +29,23 @@
 
 
                     <div class="form-group">
-                        {{ Form::hidden('active',1,['class' => 'form-control'])}}
+                        {{ Form::label('statusl', 'Task Status') }}
+                        {{ Form::checkbox('active', 'ON',true)}}
                     </div>
 
                     <div class="form-group">
-                        {{ Form::hidden('companies_id',2,['class' => 'form-control'])}}
+                        {!! Form::label('project', 'Choose the Project') !!}
+                        <select id="projects_id" name="projects_id" class="form-control">
+                          @foreach($projects as $project)
+                            @if(Auth::user()->companies_id == $project->companies_id)
+                              <option value="{{$project->id}}">{{$project->name}}</option>
+                            @endif 
+                          @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                      @include('test')
                     </div>
 
                     <div class="box-footer">

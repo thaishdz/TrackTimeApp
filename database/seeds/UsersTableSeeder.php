@@ -22,6 +22,7 @@ class UsersTableSeeder extends Seeder
         $user->username = 'google.googleSan';
         $user->password = bcrypt('secret');
         $user->token = str_random(25);
+        $user->active = 'no';
         $user->companies_id = 2;
         $user->save();
         $user->roles()->attach($role_user);
@@ -32,6 +33,7 @@ class UsersTableSeeder extends Seeder
         $user->username = 'admin.admin';
         $user->password = bcrypt('secret');
         $user->token = str_random(25);
+        $user->active = 'no';
         $user->companies_id = 1;
         $user->save();
         $user->roles()->attach($role_admin);

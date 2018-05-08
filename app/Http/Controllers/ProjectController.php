@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Project;
 use App\Task;
 use App\User;
+use App\Companies;
 
 class ProjectController extends Controller
 {
@@ -30,7 +31,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('partials.createProject');
+        return view('partials.projects.createProject');
     }
 
     /**
@@ -47,7 +48,9 @@ class ProjectController extends Controller
             'description' => 'nullable|min:10|max:50',
         ]);
 
-
+        if (!$request->has('active')) {
+            $request['active'] = 'OFF';
+        }
         Project::create($request->all());
 
         return redirect()->route('projects.index')
@@ -74,7 +77,8 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $project = Project::findOrFail($id);
-        return view('partials.editProject',compact('project'));
+        $company = Companies::all();
+        return view('partials.projects.editProject',compact('project','company'));
     }
 
     /**
@@ -92,10 +96,15 @@ class ProjectController extends Controller
             'description' => 'nullable|min:10|max:50',
         ]);
         
+        if (!$request->has('active')) {
+            $request['active'] = 'OFF';
+        }
+
         Project::findOrFail($id)->update($request->all());
 
-        return redirect()->route('projects.index')
-                        ->with('success','Project updated successfully');
+        \Session::flash('flash_message','PROJECT successfully updated.');
+
+        return redirect()->route('projects.index');
     }
 
     /**

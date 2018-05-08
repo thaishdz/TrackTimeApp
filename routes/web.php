@@ -14,10 +14,9 @@
 Route::get('/', function () {
     return view('layouts.master');
 });
-
-Route::get('profile',function() {
-	return view('TracktimeApp.profile');
-});
+// CRUD - Profile ///////////////////////////////////////
+Route::get('profile','UserController@showProfile')->name('profile');
+Route::post('profile/update/{id}','UserController@updateProfile');
 
 // CRUD - Project ///////////////////////////////////////
 
@@ -31,6 +30,10 @@ Route::resource('tasks','TaskController');
 
 // CRUD - Time
 Route::resource('time','TimeController');
+/////////////////////////////////////////////////////////
+
+// CRUD - Admin
+Route::resource('admin','AdminController')->middleware('role:admin');
 /////////////////////////////////////////////////////////
 
 Auth::routes();

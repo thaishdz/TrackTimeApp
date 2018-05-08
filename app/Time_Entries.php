@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Time_Entries extends Model
 {
-	protected $fillable = ['start','stop','total','duration'];
+	protected $fillable = ['start','finish','duration','currently'];
 
     public function tasks()
     {

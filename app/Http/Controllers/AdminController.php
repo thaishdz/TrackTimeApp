@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-use App\Task;
-use App\Time_Entries;
+use App\User;
+use App\Company;
 
-class TimeController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +17,16 @@ class TimeController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+
+        $companies = DB::table('companies')
+                        ->join('users','users.companies_id', '=','companies.id')
+                        ->select('companies.id','companies.name')
+                        ->get()
+                        ->toArray();
+        // dd($users);
+
+        return view('admin.admin',compact('users','companies'));
     }
 
     /**
@@ -26,7 +36,7 @@ class TimeController extends Controller
      */
     public function create()
     {
-        return 'hello';
+        //
     }
 
     /**
@@ -37,7 +47,7 @@ class TimeController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //
     }
 
     /**
@@ -59,7 +69,8 @@ class TimeController extends Controller
      */
     public function edit($id)
     {
-
+        $user = User::findOrFail($id);
+        return view('admin.editAdmin',compact('user'));
     }
 
     /**
@@ -71,14 +82,16 @@ class TimeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
 
-        $time = Time_Entries::findOrFail($id);
-        $time->duration = $request->duration;
-        $time->currently = $request->timing;
-        if ($time->save()) {
-            return response()->json(["response" => true,"time" => $time]);
-        }
-        return response()->json(["response" => false,"time" => $time]);
+            'username' => 'required|min:5|max:20',
+            'name' => 'required|min:5|max:20',
+            'email' => 'required|min:5|max:20',
+        ]);
+
+        User::findOrFail($id)->update($request->all());
+        \Session::flash('flash_message','User successfully updated.');
+        return redirect('admin');
     }
 
     /**
@@ -89,6 +102,8 @@ class TimeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::destroy($id);
+        \Session::flash('flash_message','USER successfully removed.'); //<--FLASH MESSAGE
+        return redirect('admin');
     }
 }
