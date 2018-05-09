@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="{{asset('dist/css/skins/skin-blue.min.css')}}">
   @stack('styles')
 
+
 <!-- REQUIRED JS SCRIPTS -->
 
 
@@ -33,6 +34,8 @@
 {{-- Timer --}}
 <script src="{{asset('js/jquery.1.11.2.min.js')}}"></script>
 <script src="{{asset('js/timer.jquery.min.js')}}"></script>
+{{-- moment.js --}}
+<script src="{{asset('js/moment.js')}}"></script>
 
   <!-- Google Font -->
   <link rel="stylesheet"

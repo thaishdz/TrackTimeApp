@@ -19,7 +19,7 @@
       <label >When does it finish?</label>
 
       <div id="datetimepicker1" class="input-append date">
-          <input type="text" name="stop"></input>
+          <input type="text" name="finish"></input>
           <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
           </span>

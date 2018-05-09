@@ -1,28 +1,6 @@
-<script>
-  $(function () {
-  var timerId = 0;
-  var ctr=0;
-  var max=10;
-  
-  timerId = setInterval(function () {
-    // interval function
-    ctr++;
-    $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
-    
-    // max reached?
-    if (ctr==max){
-      clearInterval(timerId);
-    }
-    
-  }, 500);
-
-
-  $('.btn-default').click(function () {
-    clearInterval(timerId);
-  });
-
-});
-</script>
+@push('styles')
+    <link href="{{ asset('css/progressBar.css') }}" rel="stylesheet">
+@endpush
 
 <div class="container">
   <div class="table-responsive">
@@ -47,6 +25,7 @@
           <tbody>
             @foreach($tasks as $task)
               @foreach($projects as $p)
+              
                   @if($p->id == $task->projects_id && $p->companies_id == Auth::user()->companies_id)
                     <tr>
                       <td>{{++$i}}</td>
@@ -54,14 +33,23 @@
                       <td>{{$task->description}}</td> 
                       <td>{{$task->estimated_minute}}</td>
                       <td>{{$task->status}}</td>
-                      <td>@include('timer')</td>
+                       
+                      @foreach ($time as $t)
+                        @if ($t->id == $task->time_id)    
+                          <td>
+                            <p>{{$task->time_id}}</p>
+                            <p>{{$t->start}}</p>
+                            <p>{{$t->finish}}</p>
+                            @include('timer')
+                          </td>
+                        @endif 
+                      @endforeach 
+
                       <td>
-                        <div class="progress progress-xs" id="blips">
-                            <div class="progress-bar progress-bar-yellow" role="progressbar">
-                              <span class="sr-only"></span>  
-                            </div>
-                        </div>                     
-                      </td>    
+                          <div id="progressBar">
+                              <div class="bar"></div>
+                          </div>                         
+                      </td>
                       <td>{{$p->name}}</td>
 
                     {{-- EDIT --}}
@@ -79,7 +67,9 @@
                     {!! Form::close() !!}
                     </td>
                   </tr>
+                 
                 @endif
+                
               @endforeach
             @endforeach
           </tbody>

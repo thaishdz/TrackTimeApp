@@ -55,7 +55,7 @@ class TaskController extends Controller
 
        Time_Entries::create([
             'start' => $request->start,
-            'stop'  => $request->stop,
+            'finish'  => $request->finish,
             'total' => null,
             'duration' => null,
        ]);
