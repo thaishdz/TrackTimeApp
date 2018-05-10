@@ -1,20 +1,18 @@
 <style>
- #progressBar {
-  width: 90%;
-  margin: 10px auto;
-  height: 22px;
-  background-color: #0A5F44;
+.progressBar {
+  width: 100%;
+  background-color: #85878c;
 }
 
-#progressBar div {
-  height: 100%;
-  text-align: right;
-  padding: 0 10px;
-  line-height: 22px;
-  width: 0;
-  background-color: #CBEA00;
-  box-sizing: border-box;
+.bar {
+  width: 0%;
+  height: 30px;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 30px;
+  color: white;
 }
+
 </style>
 <div class='col-md-3'>
 	<input type='text' name='timer' id="timer-{{$task->id}}" class='form-control timer-demo-{{$task->id}}' placeholder='0' readonly/>
@@ -28,12 +26,13 @@
 	<button class='btn btn-danger remove-timer-btn-{{$task->id}} hidden'>STOP</button>
 </div>
 <script>
+	var pause1 = false;
 	(function(){
 		var hasTimer = false;
 		
 		// Init timer START
 		$('.start-timer-btn-{{$task->id}}').on('click', function() {
-			timeTotal({{$task->time_id}},'{{$t->start}}','{{$t->finish}}');
+			timeTotal({{$task->time_id}},'{{$t->start}}','{{$t->finish}}',{{$task->id}},pause1);
 			hasTimer = true;
 			$('.timer-demo-{{$task->id}}').timer({
 				editable: true
@@ -60,17 +59,14 @@
 			$('.timer-demo-{{$task->id}}').timer('pause');
 			$(this).addClass('hidden');
 			$('.resume-timer-btn-{{$task->id}}').removeClass('hidden');
-
-
+			pause1 = true;
+			
+			
 			var pause = new Date();
 			var p = formatDate(pause);
-			// alert(p);
 
 			var data = ($('#timer-{{$task->id}}').val()).split(" ",1).toString();
 
-			$('.pause-timer-btn-{{$task->id}}').click(function () {
-
-			});
 			$.ajaxSetup({
  				headers: {
     			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -153,28 +149,42 @@
   		return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + strTime;
 	}
 
-	function progress(timeleft, timetotal,taskID) {
-	    var progressBarWidth = timeleft * taskID.width() / timetotal;
-	    $('.progressBar-{{$task->id}}').animate({ width: progressBarWidth }, 500).html(Math.floor(timeleft/60) + ":"+ timeleft%60);
-	    if(timeleft > 0) {
-	        setTimeout(function() {
-	            progress(timeleft - 1, timetotal, $('.progressBar-{{$task->id}}'));
-	        }, 1000);
-	    }
+	function progress(timetotal,$element,pause) {
+		var incrementer = Math.round(100/timetotal);
+		var lengthprbar = 0;
+		var timeleft = 0;
+		var minutesleft = timetotal;
+
+	    $element.interval = setInterval(function () {
+
+	    	if (minutesleft === 0 || pause) {
+	    		alert('clear intervalo')
+	        	clearInterval($element.interval);
+	        	return;
+	    	}
+	    
+	    	lengthprbar += incrementer;
+	    
+	    	$element.find('div').width(lengthprbar + '%');
+
+	    	$element.find('div').html(lengthprbar * 1  + '%');
+	    
+	    	minutesleft--;
+
+	    	// alert(minutesleft)
+
+		}, 60000);
+
 	};
 
-	function timeTotal(timeID,start,finish){
-		alert(timeID)
-		// alert(start)
-		// alert(finish)
+	function timeTotal(timeID,start,finish,taskID,pause1){
 		var start = moment(start,"YYYY-MM-DD HH:mm:ss");
 		var finish = moment(finish,"YYYY-MM-DD HH:mm:ss");
 
-		// var totaldays = finish.diff(start,'d');
-		var totalHours = finish.diff(start,'h');
-		progress(totalHours, totalHours,$('.progressBar-{{$task->id}}'));
-		// alert(totaldays + 'days');
-		// alert(totalHours + 'hours');
+		var totalMinutes = finish.diff(start,'m');
+		alert(totalMinutes + 'minutes');
+		// put the id in progressBar
+		progress(totalMinutes,$('#' + taskID),pause1);
 
 	}
 

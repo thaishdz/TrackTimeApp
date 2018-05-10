@@ -1,7 +1,3 @@
-@push('styles')
-    <link href="{{ asset('css/progressBar.css') }}" rel="stylesheet">
-@endpush
-
 <div class="container">
   <div class="table-responsive">
     <div class="box">
@@ -17,6 +13,8 @@
               <th>Description</th>
               <th>Time</th>
               <th>Status</th>
+              <th>Start</th>
+              <th>Finish</th>
               <th>Timing</th>
               <th>Progress</th>
               <th>Project</th>
@@ -33,21 +31,20 @@
                       <td>{{$task->description}}</td> 
                       <td>{{$task->estimated_minute}}</td>
                       <td>{{$task->status}}</td>
-                       
+
                       @foreach ($time as $t)
-                        @if ($t->id == $task->time_id)    
+                        @if ($t->id == $task->time_id) 
+                          <td>{{$t->start}}</td>
+                          <td>{{$t->finish}}</td>   
                           <td>
-                            <p>{{$task->time_id}}</p>
-                            <p>{{$t->start}}</p>
-                            <p>{{$t->finish}}</p>
                             @include('timer')
                           </td>
                         @endif 
                       @endforeach 
 
                       <td>
-                          <div id="progressBar">
-                              <div class="bar"></div>
+                          <div class="progressBar" id="{{$task->id}}">
+                              <div class="bar" id="{{$task->id}}">0%</div>
                           </div>                         
                       </td>
                       <td>{{$p->name}}</td>
@@ -55,7 +52,7 @@
                     {{-- EDIT --}}
                       <td>
                       <a href="{{ route('tasks.edit',$task->id) }}">
-                        <button type="submit" class="btn btn-warning">
+                        <button type="submit" class="btn btn-warning btn-sm">
                           <i class="fa fa-pencil" aria-hidden="true"></i>
                         </button>
                       </a>
