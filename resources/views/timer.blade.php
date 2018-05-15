@@ -20,19 +20,74 @@
 	
 <div class='col-md-9'>
 
-	<button class='btn btn-default start-timer-btn-{{$task->id}}'>START</button>
+	<button class='btn btn-default start-timer-btn-{{$task->id}}' name="start-{{$task->id}}">START</button>
 	<button class='btn btn-success resume-timer-btn-{{$task->id}} hidden'>Resume</button>
 	<button class='btn btn-info pause-timer-btn-{{$task->id}} hidden'>Pause</button>
 	<button class='btn btn-danger remove-timer-btn-{{$task->id}} hidden'>STOP</button>
 </div>
 <script>
-	var pause1 = false;
+	var cFlag = false;
+	var intervalID;
+	var intervals = [];
+	function formatDate(date) {
+  		var hours = date.getHours();
+  		var minutes = date.getMinutes();
+  		var sc = date.getSeconds();
+  		hours = hours % 12;
+  		hours = hours ? hours : 12; // the hour '0' should be '12'
+  		minutes = minutes < 10 ? '0'+minutes : minutes;
+  		var strTime = hours + ':' + minutes + ':' + sc;
+  		return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + strTime;
+	}
+
+
+
+	function getTimeTotal(start,finish){
+		var start = moment(start,"YYYY-MM-DD HH:mm:ss");
+		var finish = moment(finish,"YYYY-MM-DD HH:mm:ss");
+
+		var totalMinutes = finish.diff(start,'m');
+		alert(totalMinutes + ' minutes');
+		return totalMinutes;
+	}
+	
+ 	
+	function progress(minutesleft,$element,taskid,pause1) {
+
+		var incrementer = Math.round(100/minutesleft);
+		var lengthprbar = 0;
+		intervals[taskid] = setInterval(function () {
+				console.log('The current intervalID is ' + intervals[taskid])
+				console.log('INTERVALUUUUUUUUUUUUUUUUUUUUUUUUS');
+			    	minutesleft--;
+					console.log('Quedan ' + minutesleft + ' minutos')
+			    	if (minutesleft >= 0) {
+						lengthprbar += incrementer;
+				    	console.log(lengthprbar + ' es la lengthbar')
+
+				    	$element.find('div').width(lengthprbar + '%');
+
+				    	$element.find('div').html(lengthprbar * 1  + '%');				    	
+
+				    	if (minutesleft == 0) {
+				    		clearInterval(intervals[taskid]);
+				    		$('.timer-demo-' + taskid).timer('pause');
+				    	}
+			    	}
+			}, 60000);
+
+	};
+
+
+
+
 	(function(){
 		var hasTimer = false;
 		
 		// Init timer START
 		$('.start-timer-btn-{{$task->id}}').on('click', function() {
-			timeTotal({{$task->time_id}},'{{$t->start}}','{{$t->finish}}',{{$task->id}},pause1);
+			var timeTotal = getTimeTotal('{{$t->start}}','{{$t->finish}}');
+			progress(timeTotal,$('#' + {{$task->id}}),{{$task->id}},false);
 			hasTimer = true;
 			$('.timer-demo-{{$task->id}}').timer({
 				editable: true
@@ -40,16 +95,22 @@
 			$(this).addClass('hidden');
 			$('.pause-timer-btn-{{$task->id}}, .remove-timer-btn-{{$task->id}}').removeClass('hidden');
 
+
 		});
 			
 
 		// Init timer RESUME
 		$('.resume-timer-btn-{{$task->id}}').on('click', function() {
 			var data = ($('#timer-{{$task->id}}').val()).split(" ",1).toString();
-			progress(data, 600, $('.progressBar-{{$task->id}}'));
+
 			$('.timer-demo-{{$task->id}}').timer('resume');
 			$(this).addClass('hidden');
 			$('.pause-timer-btn-{{$task->id}}, .remove-timer-btn-{{$task->id}}').removeClass('hidden');
+
+			alert('entre en RESUME')
+			cFlag = false;
+			progress(0,$('#' + {{$task->id}}),cFlag);
+
 
 		});
 
@@ -59,7 +120,9 @@
 			$('.timer-demo-{{$task->id}}').timer('pause');
 			$(this).addClass('hidden');
 			$('.resume-timer-btn-{{$task->id}}').removeClass('hidden');
-			pause1 = true;
+			cFlag = true;
+			alert(' has apretado el boton de pause y su valor ahora es ' + cFlag)
+			progress(0,$('#' + {{$task->id}}),cFlag);
 			
 			
 			var pause = new Date();
@@ -78,10 +141,10 @@
 				type: 'PUT',
 				data : {duration : data, timing : p},
 				success: function() {
-					// alert('valued');
+					// console.log('valued');
 				},
 				error: function(response){
-					alert('ERROR'+ " " + response.value);
+					console.log('ERROR'+ " " + response.value);
 				}
 			});
 		});
@@ -135,58 +198,9 @@
 				$('.resume-timer-btn-{{$task->id}}').addClass('hidden');
 			}
 		});
-	})();
 
+})();
 
-	function formatDate(date) {
-  		var hours = date.getHours();
-  		var minutes = date.getMinutes();
-  		var sc = date.getSeconds();
-  		hours = hours % 12;
-  		hours = hours ? hours : 12; // the hour '0' should be '12'
-  		minutes = minutes < 10 ? '0'+minutes : minutes;
-  		var strTime = hours + ':' + minutes + ':' + sc;
-  		return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + strTime;
-	}
-
-	function progress(timetotal,$element,pause) {
-		var incrementer = Math.round(100/timetotal);
-		var lengthprbar = 0;
-		var timeleft = 0;
-		var minutesleft = timetotal;
-
-	    $element.interval = setInterval(function () {
-
-	    	if (minutesleft === 0 || pause) {
-	    		alert('clear intervalo')
-	        	clearInterval($element.interval);
-	        	return;
-	    	}
-	    
-	    	lengthprbar += incrementer;
-	    
-	    	$element.find('div').width(lengthprbar + '%');
-
-	    	$element.find('div').html(lengthprbar * 1  + '%');
-	    
-	    	minutesleft--;
-
-	    	// alert(minutesleft)
-
-		}, 60000);
-
-	};
-
-	function timeTotal(timeID,start,finish,taskID,pause1){
-		var start = moment(start,"YYYY-MM-DD HH:mm:ss");
-		var finish = moment(finish,"YYYY-MM-DD HH:mm:ss");
-
-		var totalMinutes = finish.diff(start,'m');
-		alert(totalMinutes + 'minutes');
-		// put the id in progressBar
-		progress(totalMinutes,$('#' + taskID),pause1);
-
-	}
 
 </script>
 

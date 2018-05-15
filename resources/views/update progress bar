@@ -1,0 +1,39 @@
+var timer = 0,
+    perc = 0,
+    timeTotal = 2500,
+    timeCount = 1,
+    cFlag;
+
+function updateProgress(percentage) {
+    var x = (percentage/timeTotal)*100,
+        y = x.toFixed(3);
+    $('#pbar_innerdiv').css("width", x + "%");
+    $('#pbar_innertext').text(y + "%");
+}
+
+function animateUpdate() {
+    if(perc < timeTotal) {
+        perc++;
+        updateProgress(perc);
+        timer = setTimeout(animateUpdate, timeCount);
+    }
+}
+
+$(document).ready(function() {
+    $('#pbar_outerdiv').click(function() {
+        if (cFlag == undefined) {
+            clearTimeout(timer);
+            perc = 0;
+            cFlag = true;
+            animateUpdate();
+        }
+        else if (!cFlag) {
+            cFlag = true;
+            animateUpdate();
+        }
+        else {
+            clearTimeout(timer);
+            cFlag = false;
+        }
+    });
+});

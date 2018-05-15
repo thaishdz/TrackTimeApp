@@ -18,14 +18,17 @@ Route::get('/', function () {
 Route::get('profile','UserController@showProfile')->name('profile');
 Route::post('profile/update/{id}','UserController@updateProfile');
 
+Route::group(['middleware' => ['auth']], function () {
+	Route::resource('projects','ProjectController');
+	Route::resource('tasks','TaskController');
+    
+});
 // CRUD - Project ///////////////////////////////////////
 
-Route::resource('projects','ProjectController');
 
 /////////////////////////////////////////////////////////
 
 // CRUD - Task
-Route::resource('tasks','TaskController');
 /////////////////////////////////////////////////////////
 
 // CRUD - Time

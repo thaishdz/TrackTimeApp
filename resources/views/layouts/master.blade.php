@@ -185,13 +185,13 @@
     <section class="sidebar">
 
       <!-- Sidebar Menu -->
-      <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MENU</li>
-        <li class="active">
-          <a href="{{asset('projects')}}"><i class="fa fa-folder"></i> 
-            <span>Projects</span>
-          </a>
-        </li>
+        <ul class="sidebar-menu" data-widget="tree">
+          <li class="header">MENU</li>
+          <li class="active">
+            <a href="{{asset('projects')}}"><i class="fa fa-folder"></i> 
+              <span>Projects</span>
+            </a>
+          </li>
 
         <li>
           <a href="{{asset('tasks')}}"><i class="fa fa-tasks"></i> 

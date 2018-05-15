@@ -45,7 +45,7 @@
                       <td>
                           <div class="progressBar" id="{{$task->id}}">
                               <div class="bar" id="{{$task->id}}">0%</div>
-                          </div>                         
+                          </div>                          
                       </td>
                       <td>{{$p->name}}</td>
 
