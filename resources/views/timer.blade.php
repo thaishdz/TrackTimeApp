@@ -26,9 +26,11 @@
 	<button class='btn btn-danger remove-timer-btn-{{$task->id}} hidden'>STOP</button>
 </div>
 <script>
-	var cFlag = false;
-	var intervalID;
 	var intervals = [];
+	var lengthprbar;
+	var incrementer;
+
+
 	function formatDate(date) {
   		var hours = date.getHours();
   		var minutes = date.getMinutes();
@@ -40,43 +42,72 @@
   		return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + strTime;
 	}
 
+	function getDateTimeToday(finishDate){
+		var now = moment();
+		var isafter = moment(now).isAfter(finishDate);
+		if (!isafter) {
+			return now;
+		}
+		return null;
+	}
 
 
 	function getTimeTotal(start,finish){
-		var start = moment(start,"YYYY-MM-DD HH:mm:ss");
-		var finish = moment(finish,"YYYY-MM-DD HH:mm:ss");
+		console.log('function getTimeTotal ' + start)
 
-		var totalMinutes = finish.diff(start,'m');
-		alert(totalMinutes + ' minutes');
-		return totalMinutes;
+		if (start != null) {
+			var start = moment(start,"YYYY-MM-DD HH:mm:ss");
+			var finish = moment(finish,"YYYY-MM-DD HH:mm:ss");
+
+			var totalMinutes = finish.diff(start,'m');
+			alert('function getTimeTotal ' + totalMinutes + ' minutes');
+			return totalMinutes;
+		}
+		return 0;
 	}
 	
  	
-	function progress(minutesleft,$element,taskid,pause1) {
+	function progress(minutesleft,$element,taskid,pause1,resume) {
 
-		var incrementer = Math.round(100/minutesleft);
-		var lengthprbar = 0;
-		intervals[taskid] = setInterval(function () {
-				console.log('The current intervalID is ' + intervals[taskid])
-				console.log('INTERVALUUUUUUUUUUUUUUUUUUUUUUUUS');
-			    	minutesleft--;
-					console.log('Quedan ' + minutesleft + ' minutos')
-			    	if (minutesleft >= 0) {
-						lengthprbar += incrementer;
-				    	console.log(lengthprbar + ' es la lengthbar')
+		console.log('los minutes que me llegan son ' + minutesleft)
 
-				    	$element.find('div').width(lengthprbar + '%');
+		incrementer = Number((100/minutesleft).toFixed(2));
 
-				    	$element.find('div').html(lengthprbar * 1  + '%');				    	
+		if (resume == 'undefined' || !resume) {
+			lengthprbar = 0;
 
-				    	if (minutesleft == 0) {
-				    		clearInterval(intervals[taskid]);
-				    		$('.timer-demo-' + taskid).timer('pause');
+		}
+
+		if (pause1 || minutesleft == 0) {
+			stop();
+		}else{
+			intervals[taskid] = setInterval(function () {
+					console.log('The current intervalID is ' + intervals[taskid])
+				    	minutesleft--;
+						console.log('Quedan ' + minutesleft + ' minutos')
+						console.log('incrementer tiene ' + incrementer)
+				    	if (minutesleft >= 0) {
+							lengthprbar += incrementer;
+					    	console.log(lengthprbar + ' es la lengthbar')
+
+					    	$element.find('div').width(lengthprbar + '%');
+
+					    	$element.find('div').html(lengthprbar * 1  + '%');				    	
 				    	}
-			    	}
+				    	if (minutesleft == 0) {
+				    		stop();
+					    }
 			}, 60000);
+		}
 
-	};
+
+		function stop() {
+			console.log('taskid paused is ' + intervals[taskid])
+			clearInterval(intervals[taskid]);
+			$('.timer-demo-' + taskid).timer('pause');
+		}
+
+	}
 
 
 
@@ -86,47 +117,70 @@
 		
 		// Init timer START
 		$('.start-timer-btn-{{$task->id}}').on('click', function() {
-			var timeTotal = getTimeTotal('{{$t->start}}','{{$t->finish}}');
-			progress(timeTotal,$('#' + {{$task->id}}),{{$task->id}},false);
-			hasTimer = true;
-			$('.timer-demo-{{$task->id}}').timer({
-				editable: true
-			});
-			$(this).addClass('hidden');
-			$('.pause-timer-btn-{{$task->id}}, .remove-timer-btn-{{$task->id}}').removeClass('hidden');
+
+			var timeTotal = getTimeTotal(getDateTimeToday('{{$t->finish}}'),'{{$t->finish}}');
+			if (timeTotal == 0) {
+				$('.timer-demo-' + {{$task->id}}).timer('pause');
+			}else{
+				progress(timeTotal,$('#' + {{$task->id}}),{{$task->id}});
+				hasTimer = true;
+				$('.timer-demo-{{$task->id}}').timer({
+					editable: true
+				});
+				$(this).addClass('hidden');
+				$('.pause-timer-btn-{{$task->id}}, .remove-timer-btn-{{$task->id}}').removeClass('hidden');
+			}
 
 
 		});
-			
 
 		// Init timer RESUME
 		$('.resume-timer-btn-{{$task->id}}').on('click', function() {
-			var data = ($('#timer-{{$task->id}}').val()).split(" ",1).toString();
 
 			$('.timer-demo-{{$task->id}}').timer('resume');
 			$(this).addClass('hidden');
 			$('.pause-timer-btn-{{$task->id}}, .remove-timer-btn-{{$task->id}}').removeClass('hidden');
 
-			alert('entre en RESUME')
-			cFlag = false;
-			progress(0,$('#' + {{$task->id}}),cFlag);
+			var data = ($('#timer-{{$task->id}}').val()).split(" ",1).toString();
+
+			console.log('FUNCTION RESUME')
+
+			var resume = $('#' + {{$task->id}}).text();
+			resume = resume.substring(0,resume.indexOf('%'));
+
+			if (getDateTimeToday() >= '{{$t->finish}}') {
+				alert('DATE EXPIRED')
+				$('.timer-demo-{{$task->id}}').timer('pause');
+			}else{
+				var minutesleft = getTimeTotal(getDateTimeToday(),'{{$t->finish}}');
+			}
+
+			console.log('minutes que quedan ' + minutesleft)
+
+			progress(minutesleft,$('#' + {{$task->id}}),{{$task->id}},false,resume);
 
 
 		});
-
 
 		// Init timer PAUSE
 		$('.pause-timer-btn-{{$task->id}}').on('click', function() {
 			$('.timer-demo-{{$task->id}}').timer('pause');
 			$(this).addClass('hidden');
 			$('.resume-timer-btn-{{$task->id}}').removeClass('hidden');
-			cFlag = true;
-			alert(' has apretado el boton de pause y su valor ahora es ' + cFlag)
-			progress(0,$('#' + {{$task->id}}),cFlag);
-			
-			
-			var pause = new Date();
-			var p = formatDate(pause);
+
+			console.log('FUNCTION PAUSE')
+
+			var today = new Date();
+			today = formatDate(today);
+
+			if (getDateTimeToday() >= '{{$t->finish}}') {
+				alert('DATE EXPIRED')
+				$('.timer-demo-{{$task->id}}').timer('pause');
+			}else{
+				var minutesleft = getTimeTotal(getDateTimeToday(),'{{$t->finish}}');
+			}
+
+			progress(minutesleft,$('#' + {{$task->id}}),{{$task->id}},true);
 
 			var data = ($('#timer-{{$task->id}}').val()).split(" ",1).toString();
 
@@ -139,7 +193,7 @@
 			$.ajax({
 				url : '/time/{{$task->time_id}}',
 				type: 'PUT',
-				data : {duration : data, timing : p},
+				data : {duration : data, timing : today},
 				success: function() {
 					// console.log('valued');
 				},

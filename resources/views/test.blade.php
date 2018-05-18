@@ -37,14 +37,17 @@
     </script>
 
     <script type="text/javascript">
+      var today = new Date();
       $('#datetimepicker').datetimepicker({
         format: 'yyyy-MM-dd hh:mm:ss',
-        language: 'pt-BR'
+        language: 'en',
+        startDate: today
       });
 
       $('#datetimepicker1').datetimepicker({
         format: 'yyyy-MM-dd hh:mm:ss',
-        language: 'pt-BR'
+        language: 'en',
+        startDate:  today
       });
     </script>
   </body>

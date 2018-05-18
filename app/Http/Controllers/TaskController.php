@@ -50,6 +50,8 @@ class TaskController extends Controller
             'name' => 'required|min:5|max:20',
             'description' => 'nullable|min:10|max:50',
             'estimated_minute' => 'required|min:1',
+            'start' => 'required|date|after_or_equal:date',
+            'finish' => 'required|date|after:start'
 
         ]);
 
@@ -126,17 +128,28 @@ class TaskController extends Controller
 
             'name' => 'required|min:5|max:20',
             'description' => 'nullable|min:10|max:50',
+            'start' => 'required|date|after_or_equal:date',
+            'finish' => 'required|date|after:start'
         ]);
 
         if (!$request->has('status')) {
             $request['status'] = 'OFF';
         }
 
+        // dd($request->all());
+
         Task::findOrFail($id)->update($request->all());
 
 
-        return redirect()->route('tasks.index')
-                        ->with('success','Task updated successfully');
+        Time_Entries::findOrFail($id)->update([
+
+            'start' => $request->start,
+            'finish' => $request->finish,
+
+        ]);
+
+        \Session::flash('flash_message','TASK updated successfully.'); //<--FLASH MESSAGE
+        return redirect()->route('tasks.index');
     }
 
     /**
