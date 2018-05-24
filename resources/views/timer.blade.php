@@ -22,7 +22,7 @@
 
 	<button class='btn btn-default start-timer-btn-{{$task->id}}' name="start-{{$task->id}}">START</button>
 	<button class='btn btn-success resume-timer-btn-{{$task->id}} hidden'>Resume</button>
-	<button class='btn btn-info pause-timer-btn-{{$task->id}} hidden'>Pause</button>
+	<button class='btn btn-info pause-timer-btn-{{$task->id}} hidden' id="pause-{{$task->id}}" >Pause</button>
 	<button class='btn btn-danger remove-timer-btn-{{$task->id}} hidden'>STOP</button>
 </div>
 <script>
@@ -237,7 +237,7 @@
 			});
 		});
 
-			// Additional focus event for this demo
+			// Additional focus event 
 		$('.timer-demo-{{$task->id}}').on('focus', function() {
 			if(hasTimer) {
 				$('.pause-timer-btn-{{$task->id}}').addClass('hidden');
@@ -245,7 +245,7 @@
 			}
 		});
 
-			// Additional blur event for this demo
+			// Additional blur event 
 		$('.timer-demo-{{$task->id}}').on('blur', function() {
 			if(hasTimer) {
 				$('.pause-timer-btn-{{$task->id}}').removeClass('hidden');

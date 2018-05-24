@@ -30,7 +30,7 @@
 
                     <div class="form-group">
                         {{ Form::label('statusl', 'Task Status') }}
-                        {{ Form::checkbox('active', 'ON',true)}}
+                        {{ Form::checkbox('status', 'ON',true)}}
                     </div>
 
                     <div class="form-group">
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="form-group">
-                      @include('test')
+                      @include('datetime')
                     </div>
 
                     <div class="box-footer">

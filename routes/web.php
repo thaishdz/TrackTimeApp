@@ -1,44 +1,41 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
+/*========================MAIN PAGE==============================*/
 Route::get('/', function () {
     return view('layouts.master');
 });
-// CRUD - Profile ///////////////////////////////////////
+/*================================================================*/
+
+/*==========================PROFILE=============================*/
 Route::get('profile','UserController@showProfile')->name('profile');
 Route::post('profile/update/{id}','UserController@updateProfile');
+/*================================================================*/
+
+/*========================COMPANY CRUD==========================*/
+
+Route::resource('company_details','CompanyController');
+
+/*=============================================================*/
 
 Route::group(['middleware' => ['auth']], function () {
 	Route::resource('projects','ProjectController');
 	Route::resource('tasks','TaskController');
     
 });
-// CRUD - Project ///////////////////////////////////////
 
 
-/////////////////////////////////////////////////////////
+/*=========================TIMER CRUD========================*/
 
-// CRUD - Task
-/////////////////////////////////////////////////////////
-
-// CRUD - Time
 Route::resource('time','TimeController');
-/////////////////////////////////////////////////////////
 
-// CRUD - Admin
+/*===========================================================*/
+
+
+/*=========================ADMIN CRUD========================*/
+
 Route::resource('admin','AdminController')->middleware('role:admin');
-/////////////////////////////////////////////////////////
 
+/*===========================================================*/
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

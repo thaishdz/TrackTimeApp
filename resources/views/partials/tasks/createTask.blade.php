@@ -49,7 +49,7 @@
                     </div>
                     {{-- time --}}
                     <div class="form-group">
-                      @include('test')
+                      @include('datetime')
                     </div>
                     <div class="box-footer">
                       {{Form::submit('Create Task',['class' => 'btn btn-success'])}}

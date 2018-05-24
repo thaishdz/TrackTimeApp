@@ -13,11 +13,13 @@ class UserController extends Controller
 
     public function showProfile() {
 
-    	return view('TracktimeApp.profile');
+        $companies = Companies::all();
+    	return view('TracktimeApp.profile',compact('companies'));
     }
 
     public function updateProfile(Request $request,$id){
 
+        dd($request->all());
     	if ($request->user()) {
 
     		$request->validate([
@@ -36,6 +38,7 @@ class UserController extends Controller
                 $request['password']=bcrypt($request['password']);
     			User::findOrFail($id)->update($request->all());
     		}
+            
             \Session::flash('flash_message','Profile successfully updated.'); 
             
     		return redirect()->route('profile');

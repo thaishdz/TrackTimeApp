@@ -14,7 +14,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -55,7 +55,7 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -66,7 +66,7 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        //
+    
     }
 
     /**
@@ -78,7 +78,20 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+
+        $request->validate([
+
+            'company' => 'required|min:5|max:20',
+            'address' => 'nullable|min:10|max:50',
+        ]);
+
+        Companies::findOrFail($id)->update($request->all());
+
+        \Session::flash('flash_message','Company Details successfully UPDATED.');
+
+        return redirect()->route('profile');
+        
     }
 
     /**
