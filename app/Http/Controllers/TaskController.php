@@ -49,11 +49,21 @@ class TaskController extends Controller
 
             'name' => 'required|min:5|max:20',
             'description' => 'nullable|min:10|max:50',
-            'estimated_minute' => 'required|min:1',
             'start' => 'required|date|after_or_equal:date',
             'finish' => 'required|date|after:start'
 
         ]);
+
+        /*calcule estimated_minute*/
+
+        $start = date_create($request->start);
+        $finish  = date_create($request->finish);
+
+        $diff = date_diff($start, $finish);
+
+        $duration = ($diff->h * 60) + $diff->i;
+
+        /***************************/
 
        Time_Entries::create([
             'start' => $request->start,
@@ -68,7 +78,7 @@ class TaskController extends Controller
            Task::create([
             'name' => $request->name,
             'description' => $request->description,
-            'estimated_minute' => $request->estimated_minute,
+            'estimated_minute' => $duration,
             'status' => $request->status,
             'projects_id' => $request->projects_id,
             'time_id' => $id_time->id,
@@ -77,17 +87,16 @@ class TaskController extends Controller
             Task::create([
             'name' => $request->name,
             'description' => $request->description,
-            'estimated_minute' => $request->estimated_minute,
+            'estimated_minute' => $intervalo->format('%i'),
             'status' => 'OFF',
             'projects_id' => $request->projects_id,
             'time_id' => $id_time->id,
             ]);
        }
+
        \Session::flash('flash_message','TASK successfully added.'); //<--FLASH MESSAGE
 
         return redirect()->route('tasks.index');
-                       // ->with('success','Task created sucessfully!');
-
 
     }
 
@@ -112,7 +121,8 @@ class TaskController extends Controller
     {
         $projects = Project::all();
         $task = Task::findOrFail($id);
-        return view('partials.tasks.editTask',compact('projects','task'));
+        $time_entries = Time_Entries::findOrFail($id);
+        return view('partials.tasks.editTask',compact('projects','task','time_entries'));
     }
 
     /**
@@ -132,13 +142,30 @@ class TaskController extends Controller
             'finish' => 'required|date|after:start'
         ]);
 
+        /*calcule estimated_minute*/
+
+        $now = date_create();
+        $finish  = date_create($request->finish);
+        $start  = date_create($request->start);
+
+        $diff = date_diff($now, $finish);
+        $diff2 = date_diff($start, $finish);
+
+        $duration = ($diff->h * 60) + $diff->i;
+
+        /***************************/
+
         if (!$request->has('status')) {
             $request['status'] = 'OFF';
         }
 
-        // dd($request->all());
-
-        Task::findOrFail($id)->update($request->all());
+        if ( $diff2->d > 0) {
+            
+            Task::findOrFail($id)->update($request->all());
+        }else{
+            $request['estimated_minute']= $duration; 
+            Task::findOrFail($id)->update($request->all()); 
+        }
 
 
         Time_Entries::findOrFail($id)->update([
@@ -148,7 +175,7 @@ class TaskController extends Controller
 
         ]);
 
-        \Session::flash('flash_message','TASK updated successfully.'); //<--FLASH MESSAGE
+        \Session::flash('flash_message',$request->name . " " . 'SUCCESSFULLY UPDATED.'); //<--FLASH MESSAGE
         return redirect()->route('tasks.index');
     }
 
@@ -161,7 +188,9 @@ class TaskController extends Controller
     public function destroy($id)
     {
         Task::destroy($id);
-        \Session::flash('flash_message','TASK successfully removed.'); //<--FLASH MESSAGE
+        Time_Entries::destroy($id);
+        
+        \Session::flash('flash_message','TASK SUCCESSFULLY REMOVED.'); //<--FLASH MESSAGE
         return redirect()->route('tasks.index');
     }
 }

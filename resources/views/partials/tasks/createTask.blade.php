@@ -27,11 +27,6 @@
                     </div>  
 
                     <div class="form-group">
-                      {{ Form::label('estimated_minutel', 'Time Estimated') }}
-                      {{ Form::text('estimated_minute',null,['class' => 'form-control'])}}
-                    </div>
-
-                    <div class="form-group">
                       {{ Form::label('statusl', 'Task Status') }}
                       {{ Form::checkbox('status', 'ON',true)}}
                     </div>

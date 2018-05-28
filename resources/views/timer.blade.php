@@ -89,12 +89,16 @@
 				    	if (minutesleft >= 0) {
 							lengthprbar += incrementer;
 					    	console.log(lengthprbar + ' es la lengthbar')
+					    	
+					    	if($element.find('div').width(100 + '%')){
 
-					    	$element.find('div').width(lengthprbar + '%');
+						    	$element.find('div').width(lengthprbar + '%');
 
-					    	$element.find('div').html(lengthprbar * 1  + '%');				    	
+						    	$element.find('div').html(lengthprbar * 1  + '%');				    	
+					    	}
 				    	}
-				    	if (minutesleft == 0) {
+				    	if (minutesleft <= 0) {
+				    		alert("i'm here")
 				    		stop();
 					    }
 			}, 60000);

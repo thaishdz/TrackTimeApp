@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function updateProfile(Request $request,$id){
 
-        dd($request->all());
+        // dd($request->all());
     	if ($request->user()) {
 
     		$request->validate([

@@ -64,13 +64,11 @@
 
                       </td>
                       {{-- DELETE --}}
-                      {!! Form::open(['method' => 'DELETE','route' => ['projects.destroy',$project->id]]) !!}
                       <td>
-                        <button type="submit" class="btn btn-danger">
-                          <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-                      </td>
+                      {!! Form::open(['method' => 'DELETE','route' => ['projects.destroy',$project->id],'style'=>'display:inline']) !!}
+                        {{ Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm','data-toggle'=>'confirmation'] )  }}
                       {!! Form::close() !!}
+                      </td>
                       {{-- <td>
                         {!! Form::model($projects, ['method' => 'delete', 'route' => ['projects.destroy', $project->id], 'class' =>'form-inline form-delete']) !!}
                         {!! Form::hidden('id', $project->id) !!}
@@ -84,3 +82,6 @@
       </div>
     </div>
   </div>
+
+
+<script src="{{ asset('js/confirmation-delete.js') }}"></script>

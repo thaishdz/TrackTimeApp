@@ -37,6 +37,14 @@
 {{-- moment.js --}}
 <script src="{{asset('js/moment.js')}}"></script>
 
+<script src="{{asset('bower_components/bootstrap/js/tooltip.js')}}"></script>
+<script src="{{asset('bower_components/bootstrap/js/popover.js')}}"></script>
+
+<script src="{{asset('bower_components/bootstrap/dist/js/bootstrap-confirmation.min.js')}}"></script>
+
+
+
+
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">

@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="form-group">
-                      @include('datetime')
+                        @include('datetime')
                     </div>
 
                     <div class="box-footer">
